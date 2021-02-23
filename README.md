@@ -1,2 +1,11 @@
 # Smarthome
-Sratch for a Smarthome which is written in C++ (Arduino Bibliotek)
+
+A school project in which you have to work out a smarthome with Arduino.
+
+## Features
+
+Soon
+
+## ToDo
+
+- Soon
