@@ -1,6 +1,8 @@
 // initialize libraries
 #include <Servo.h>
 #include <Keypad.h>
+#include <SPI.h>
+#include <Ethernet.h>
 
 // Set a template to easy print operations
 template <typename T>
@@ -52,10 +54,9 @@ void playSound() {
 
 void setup() {
 
-  /** 
-   * Pin Config
-  */
+  //Pin Config
   pinMode(soundpin, OUTPUT);
+  
   playSound(); // Give a soundoutput for starting
   
   Serial.begin(9600); // Start Serial Monitor on port 9600
@@ -83,4 +84,6 @@ void loop() {
   if(key) {
     Serial << key;
   }
+
+
 }
