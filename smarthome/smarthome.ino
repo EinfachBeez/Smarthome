@@ -1,9 +1,3 @@
-// initialize libraries
-#include <Servo.h>
-#include <Keypad.h>
-#include <SPI.h>
-#include <Ethernet.h>
-
 // Set a template to easy print operations
 template <typename T>
 Print& operator<<(Print& printer, T value) {
@@ -11,8 +5,28 @@ Print& operator<<(Print& printer, T value) {
   return printer;
 }
 
+// initialize libraries
+#include <Servo.h>
+#include <Keypad.h>
+#include <SPI.h>
+#include <Ethernet.h>
+
 const byte rows = 4;
 const byte cols = 4;
+
+// Pin Config
+const byte soundpin = 13;
+const byte ultraechopin = 6;
+const byte ultratriggerpin = 5;
+
+// Variable Config
+int pin = 0;
+int len;
+
+const String password = "1342"; // Change the debug veriable to the password you want
+String password_input;
+ int password_trys = 0;
+
 
 //define the cymbols on the buttons of the keypads
 char hexaKeys[rows][cols] = {
@@ -22,21 +36,10 @@ char hexaKeys[rows][cols] = {
   {'*', '0', '#', 'D'}
 };
 
-// Pin Config
-const byte soundpin = 13;
-const byte ultraechopin = 6;
-const byte ultratriggerpin = 5;
-
 byte rowPins[rows] = {9, 8, 7, 6};
 byte colPins[cols] = {5, 4, 3, 2};
 
-
-// Variable Config
-int pin = 0;
-int len;
-
-//initialize an instance of class NewKeypad
-Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, rows, cols);
+Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, rows, cols); //initialize an instance of class NewKeypad
 
 Servo servo; // initialize servo object
 
@@ -61,29 +64,40 @@ void setup() {
   
   Serial.begin(9600); // Start Serial Monitor on port 9600
   Serial.flush(); // Waits for the transmission of outgoing serial data to complete
+
+  password_input.reserve(8); // Maximum input characters 8
   
   Serial << '\n' << "Smarthome is running now" << '\n';
   Serial << "Set the house password with four numbers" << '\n';
-  while(Serial.available() == 0) {
-    pin = Serial.read();
-    pin = Serial.parseStr();
-  }
-  len = sizeof(pin);
-  if(len == 4) {
-    Serial << "The house password was set to " << pin << '\n';
-  } else {
-    Serial << "Return please";
-    return;
-  }
-  
+
+  servo.attach(2); // attaches the servo on GPIO2 to the servo object
 }
 
 void loop() {
-  char key = keypad.getKey();
+    char key = keypad.getKey();
 
-  if(key) {
-    Serial << key;
-  }
+    if (key) {
+      
 
+      if (key == '*') {
+        password_input = ""; // Reset the password input
+        Serial << '\n' << "Reset the password input" << '\n';
+      } else if (key == '#') {
+        if (password == password_input) {
+          Serial << "Password is correct. Access granted";
+          // After Checking password
+        } else if (password_trys == 5) {
+          Serial << "You have entered the wrong password too many times. You can try again in 5 minutes.";
+          delay(5 * 60000); // 5 minutes delay
+        } else {
+          Serial << "Password is incorrect, try again";
+          password_trys++;
+        }
 
+        password_input = ""; // Clear the password input
+      } else {
+        Serial << key;
+        password_input += key; // Adds a new character to the input
+      }
+    }
 }
