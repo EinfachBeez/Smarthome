@@ -82,21 +82,21 @@ void loop() {
       if (key == '*') {
         password_input = ""; // Reset the password input
         Serial << '\n' << "Reset the password input" << '\n';
-      } else if (key == '#') {
+      } else if (key == 'D') {
         if (password == password_input) {
-          Serial << '\n' << "Password is correct. Access granted";
+          Serial << '\n' << "Password is correct. Access granted" << '\n';
           // After Checking password
         } else if (password_trys == 5) {
-          Serial << "You have entered the wrong password too many times. You can try again in 5 minutes.";
+          Serial << '\n' << "You have entered the wrong password too many times. You can try again in 5 minutes." << '\n';
           delay(5 * 60000); // 5 minutes delay
         } else {
-          Serial << "Password is incorrect, try again";
+          Serial << '\n' << "Password is incorrect, try again" << '\n';
           password_trys++;
         }
 
         password_input = ""; // Clear the password input
       } else {
-        Serial << key;
+        Serial << "*";
         password_input += key; // Adds a new character to the input
       }
     }
