@@ -23,7 +23,7 @@ const byte ultratriggerpin = 5;
 int pin = 0;
 int len;
 
-const String password = "1342"; // Change the debug veriable to the password you want
+const String password = "1742"; // Change the debug veriable to the password you want
 String password_input;
  int password_trys = 0;
 
@@ -84,7 +84,7 @@ void loop() {
         Serial << '\n' << "Reset the password input" << '\n';
       } else if (key == '#') {
         if (password == password_input) {
-          Serial << "Password is correct. Access granted";
+          Serial << '\n' << "Password is correct. Access granted";
           // After Checking password
         } else if (password_trys == 5) {
           Serial << "You have entered the wrong password too many times. You can try again in 5 minutes.";
