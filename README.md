@@ -13,8 +13,10 @@ You need to install the following libraries to use the Smarthome. In addition, t
 
 ## Features
 
-Soon
+- Login Via Keypad, Joining Sound
 
 ## ToDo
 
-- Soon
+- Door open by Servo
+- By Joining the room, make lights on
+- Show the Weather on Website
