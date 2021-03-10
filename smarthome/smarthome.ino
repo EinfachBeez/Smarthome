@@ -8,8 +8,8 @@ Print& operator<<(Print& printer, T value) {
 // initialize libraries
 #include <Servo.h>
 #include <Keypad.h>
-#include <SPI.h>
-#include <Ethernet.h>
+//#include <SPI.h>
+//#include <Ethernet.h>
 
 const byte rows = 4;
 const byte cols = 4;
@@ -59,6 +59,7 @@ void setup() {
 
   //Pin Config
   pinMode(soundpin, OUTPUT);
+  servo.attach(10);
   
   playSound(); // Give a soundoutput for starting
   
@@ -85,6 +86,9 @@ void loop() {
       } else if (key == 'D') {
         if (password == password_input) {
           Serial << '\n' << "Password is correct. Access granted" << '\n';
+
+          servo.write(90);
+          
           // After Checking password
         } else if (password_trys == 5) {
           Serial << '\n' << "You have entered the wrong password too many times. You can try again in 5 minutes." << '\n';
