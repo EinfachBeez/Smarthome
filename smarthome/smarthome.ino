@@ -59,7 +59,8 @@ void setup() {
 
   //Pin Config
   pinMode(soundpin, OUTPUT);
-  servo.attach(10);
+  
+  servo.attach(10); // attaches the servo on GPIO2 to the servo object
   
   playSound(); // Give a soundoutput for starting
   
@@ -70,8 +71,7 @@ void setup() {
   
   Serial << '\n' << "Smarthome is running now" << '\n';
   Serial << "Set the house password with four numbers" << '\n';
-
-  servo.attach(2); // attaches the servo on GPIO2 to the servo object
+  
 }
 
 void loop() {
@@ -95,7 +95,7 @@ void loop() {
           delay(5 * 60000); // 5 minutes delay
         } else {
           Serial << '\n' << "Password is incorrect, try again" << '\n';
-          password_trys++;
+          password_trys++; 
         }
 
         password_input = ""; // Clear the password input
