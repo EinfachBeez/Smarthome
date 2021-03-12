@@ -16,16 +16,17 @@ const byte cols = 4;
 
 // Pin Config
 const byte soundpin = 13;
-const byte ultraechopin = 6;
-const byte ultratriggerpin = 5;
+const byte movesensor = 12;
+const byte ledpin = 11;
 
 // Variable Config
 int pin = 0;
 int len;
+int movestatus = 0;
 
 const String password = "1742"; // Change the debug veriable to the password you want
 String password_input;
- int password_trys = 0;
+int password_trys = 0;
 
 
 //define the cymbols on the buttons of the keypads
@@ -59,6 +60,8 @@ void setup() {
 
   //Pin Config
   pinMode(soundpin, OUTPUT);
+  pinMode(movesensor, INPUT);
+  pinMode(ledpin, OUTPUT);
   
   servo.attach(10); // attaches the servo on GPIO2 to the servo object
   
@@ -87,7 +90,14 @@ void loop() {
         if (password == password_input) {
           Serial << '\n' << "Password is correct. Access granted" << '\n';
 
+          // Opens the door
           servo.write(90);
+          delay(7000); // 7 seconds delay
+          servo.write(0);
+
+          while(movestatus == HIGH) {
+            digitalWrite(ledpin, HIGH);
+          }
           
           // After Checking password
         } else if (password_trys == 5) {
