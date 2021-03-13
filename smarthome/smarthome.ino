@@ -23,8 +23,9 @@ const byte ledpin = 11;
 int pin = 0;
 int len;
 int movestatus = 0;
+String nameinput;
 
-const String password = "1742"; // Change the debug veriable to the password you want
+const String password = "1234"; // Change the debug veriable to the password you want
 String password_input;
 int password_trys = 0;
 
@@ -56,6 +57,10 @@ void playSound() {
     delay(500);
 }
 
+void onchangepassword() {
+  // Soon
+}
+
 void setup() {
 
   //Pin Config
@@ -73,8 +78,15 @@ void setup() {
   password_input.reserve(8); // Maximum input characters 8
   
   Serial << '\n' << "Smarthome is running now" << '\n';
-  Serial << "Set the house password with four numbers" << '\n';
+  Serial << "What is your name?" << '\n';
   
+  while (Serial.available() == 0);
+  
+  nameinput = Serial.readStringUntil('\n');
+  
+  Serial << "Well, " << nameinput << ". Welcome to your Smarthome" << '\n';
+
+  Serial << "The default password of your smarthome is 1234.\nPlease log in with this password before changing the default password." << '\n';
 }
 
 void loop() {
@@ -82,7 +94,6 @@ void loop() {
 
     if (key) {
       
-
       if (key == '*') {
         password_input = ""; // Reset the password input
         Serial << '\n' << "Reset the password input" << '\n';
@@ -90,14 +101,17 @@ void loop() {
         if (password == password_input) {
           Serial << '\n' << "Password is correct. Access granted" << '\n';
 
+          Serial << "Good " << "time" << ", " << "nameinput";
           // Opens the door
-          servo.write(90);
-          delay(7000); // 7 seconds delay
           servo.write(0);
+          delay(7000); // 7 seconds delay
+          servo.write(90);
 
           while(movestatus == HIGH) {
             digitalWrite(ledpin, HIGH);
           }
+
+          
           
           // After Checking password
         } else if (password_trys == 5) {
